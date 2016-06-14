@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Comment;
 use App\Models\Photo;
 use App\Models\User;
 use T4\Core\Exception;
@@ -20,20 +21,17 @@ class Backend extends Controller
 
     }
 
-    public function actionAllUsers()
+    public function actionAllUser()
     {
         $users = User::findAll();
         $this->data->users = $users;
     }
 
-    public function actionDeleteUser()
+    public function actionDeleteUser($id)
     {
-
-    }
-
-    public function actionShowUser()
-    {
-
+        $user = User::findByPK($id);
+        $user->delete();
+        $this->redirect('/admin/user');
     }
 
     public function actionAllPhoto()
@@ -70,23 +68,52 @@ class Backend extends Controller
         $this->redirect('/admin/photo');
     }
 
-    public function actionEditPhoto()
+    public function actionEditPhoto($id)
     {
-
+        if (isset($this->app->flash->errors)) {
+            $this->data->errors = $this->app->flash->errors;
+            $this->data->fields = $_SESSION['fields'];
+        }
+        $this->data->photo = Photo::findByPK($id);
     }
 
-    public function actionUpgradePhoto()
+    public function actionUpdatePhoto($id)
     {
+        if ($this->app->request->method != 'post') {
+            $this->redirect('/admin');
+        }
 
+        try {
+            $photo = Photo::findByPK($id);
+            $photo->update($this->app->request->post);
+            $this->redirect('/admin/photo');
+        } catch (MultiException $e) {
+            $this->app->flash->errors = $e;
+            $_SESSION['fields'] = $this->app->request->post;
+            $this->redirect('/admin/photo/edit/' . $id);
+        } catch(Exception $e) {
+            $this->app->flash->errors = [$e];
+            $_SESSION['fields'] = $this->app->request->post;
+            $this->redirect('/admin/photo/edit/' . $id);
+        }
     }
 
-    public function actionDeletePhoto()
+    public function actionDeletePhoto($id)
     {
-
+        $photo = Photo::findByPK($id);
+        $photo->delete();
+        $this->redirect('/admin/photo');
     }
 
-    public function actionDeleteComment()
+    public function actionAllComment()
     {
+        $this->data->comments = Comment::findAll();
+    }
 
+    public function actionDeleteComment($id)
+    {
+        $comment = Comment::findByPK($id);
+        $comment->delete();
+        $this->redirect('/admin/comment');
     }
 }

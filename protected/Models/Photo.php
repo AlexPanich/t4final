@@ -23,7 +23,7 @@ class Photo extends BaseModel
     public static function create($attributes)
     {
         $uploader = new Uploader('file');
-        if ($bool = ($uploader->isUploaded() && $uploader->checkExt())) {
+        if ($uploader->isUploaded() && $uploader->checkExt()) {
             $res = $uploader->upload();
         }
         if ($res) {
@@ -37,6 +37,30 @@ class Photo extends BaseModel
             }
         } else {
             throw new Exception('Не удалась загрузка файла');
+        }
+    }
+
+    public function update($attributes)
+    {
+        $uploader = new Uploader('file');
+        if ($uploader->isUploaded() && $uploader->checkExt()) {
+            $res = $uploader->upload();
+        }
+        if ($res) {
+            $oldPath = $this->path;
+            $attributes['path'] = $uploader->getPath();
+        }
+        $attributes['published_at'] = date('Y-m-d H:i:s');
+        try {
+            parent::update($attributes);
+        } catch (MultiException $e) {
+            if ($res) {
+                $uploader->fallback();
+            }
+            throw $e;
+        }
+        if ($res) {
+            unlink(ROOT_PATH_PUBLIC . '/photos/' . $oldPath);
         }
     }
 
@@ -80,5 +104,11 @@ class Photo extends BaseModel
             return mb_substr($this->description, 0, 50) . '...';
         }
         return $this->description;
+    }
+
+    public function delete()
+    {
+        unlink(ROOT_PATH_PUBLIC . '/photos/' . $this->path);
+        parent::delete();
     }
 }
