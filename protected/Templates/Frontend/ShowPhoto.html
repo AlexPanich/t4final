@@ -1,0 +1,109 @@
+{% extends 'Frontend.html' %}
+
+{% block content %}
+<!-- Main Container -->
+<main id="main-container">
+    <!-- Cover (You can add the class 'bg-image-parallax' for a parallax effect) -->
+    <div class="bg-image bg-image-cover" style="background-image: url('{{ photo.absPath }}');"></div>
+    <!-- END Cover -->
+
+    <!-- Story Content -->
+    <div class="bg-white">
+        <section class="content content-boxed">
+            <!-- Section Content -->
+            <h1 class="text-black text-center push-30-t push-10 visibility-hidden" data-toggle="appear" data-class="animated zoomIn">{{ photo.title }}</h1>
+            <div class="text-center visibility-hidden" data-toggle="appear" data-class="animated fadeInUp">
+                {{ photo.published_at }}
+            </div>
+            <div class="row push-50-t push-50 nice-copy-story">
+                <div class="col-sm-8 col-sm-offset-2">
+                    <p>{{ photo.description }}</p>
+                </div>
+            </div>
+            <!-- END Section Content -->
+        </section>
+    </div>
+    <!-- END Story Content -->
+
+    <!-- Comment Content -->
+    {% if photo.comments.count != 0 %}
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <h3 class="push-30-t push-10">Комментарии к фотографии</h3>
+        </div>
+    </div>
+
+        {% for comment in photo.comments %}
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="block block-bordered">
+                        <div class="block-header"><h3 class="block-title">{{ comment.user.firstName }} {{ comment.user.lastName }} {{ comment.published_at}}</h3></div>
+                        <div class="block-content"><p>{{ comment.body }}</p></div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        Пока еще нет коментариев
+    {% endif %}
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="block block-bordered">
+                <div class="block-header"><h3 class="block-title">Добавить комментарий</h3></div>
+                <div class="block-content">
+                    {% if errors is defined %}
+                    <div class="alert alert-danger">
+                        <ul>
+                            {% for error in errors %}
+                            <li>{{ error.getMessage() }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                    <form class="form-horizontal" action="/photo/{{ photo.pk }}/add-comment" method="post">
+                        <div class="form-group">
+                            <div class="col-sm-10 col-sm-offset-1">
+                                <div class="form-material form-material-info floating">
+                                    <textarea class="form-control" name="body" id="body" rows="3">{% if fields is defined %}{{ fields.body }}{% endif %}</textarea>
+                                    <label for="body">Ваш комментарий</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-10 col-sm-offset-1">
+                                <div class="col-sm-8 col-sm-offset-1 col-md-6 col-md-offset-0">
+                                    <button class="btn btn-primary" type="submit">Отправить</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END Comment Content -->
+
+    <!-- Get Started -->
+    <div class="bg-primary-dark">
+        <section class="content content-full content-boxed">
+            <!-- Section Content -->
+            <div class="push-20-t push-20 text-center">
+                <h3 class="h4 text-white-op push-20 visibility-hidden" data-toggle="appear">Понравились фотографии? </h3>
+                <a class="btn btn-rounded btn-noborder btn-lg btn-success visibility-hidden" data-toggle="appear" data-class="animated bounceIn" href="/auth/register">Зарегистрироваться</a>
+            </div>
+            <!-- END Section Content -->
+        </section>
+    </div>
+    <!-- END Get Started -->
+</main>
+<!-- END Main Container -->
+{% endblock %}
+
+{% block js_page %}
+<script>
+    jQuery(function() {
+        // Init page helpers (Appear plugin)
+        App.initHelpers('appear');
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends 'Frontend.html' %}
+
+{% block content %}
+<!-- Main Container -->
+<main id="main-container">
+    <!-- Hero Content -->
+    <div class="bg-image" style="background-image: url({{ asset('/Layouts/assets/img/hero-image.jpg') }});">
+        <div class="bg-primary-dark-op">
+            <section class="content content-full content-boxed overflow-hidden">
+                <!-- Section Content -->
+                <div class="push-100-t push-50 text-center">
+                    <h1 class="h2 text-white push-10 visibility-hidden" data-toggle="appear" data-class="animated fadeInDown">Фотоальбом</h1>
+                    <h2 class="h5 text-white-op visibility-hidden" data-toggle="appear" data-class="animated fadeInDown">Мои самые интересные фотографии</h2>
+                </div>
+                <!-- END Section Content -->
+            </section>
+        </div>
+    </div>
+    <!-- END Hero Content -->
+
+    <!-- Grid Content -->
+    <section class="content content-boxed">
+        <!-- Section Content -->
+        <div class="push-50-t push-50">
+            <div class="row">
+                {% for photo in photos %}
+                <!-- Story -->
+                <div class="col-md-4 visibility-hidden" data-toggle="appear" data-offset="50" data-class="animated fadeIn">
+                    <a class="block block-link-hover2" href="/photo/{{ photo.pk }}">
+                        <img class="img-responsive" src="{{ photo.absPath }}" alt="">
+                        <div class="block-content">
+                            <div class="font-s12 push">
+                                {{ photo.published_at }}
+                            </div>
+                            <h4 class="push-10">{{ photo.title }}</h4>
+                            <p>{{ photo.preview }}</p>
+                        </div>
+                    </a>
+                </div>
+                <!-- END Story -->
+                {% endfor %}
+            </div>
+        </div>
+        <!-- END Section Content -->
+    </section>
+    <!-- END Grid Content -->
+
+    <!-- Get Started -->
+    <div class="bg-primary-dark">
+        <section class="content content-full content-boxed">
+            <!-- Section Content -->
+            <div class="push-20-t push-20 text-center">
+                <h3 class="h4 text-white-op push-20 visibility-hidden" data-toggle="appear">Понравились фотографии? На данный момент в альбоме <strong>{{ photos.count }}</strong> интересных фотографий!</h3>
+                <a class="btn btn-rounded btn-noborder btn-lg btn-success visibility-hidden" data-toggle="appear" data-class="animated bounceIn" href="/auth/register">Зарегистрироваться</a>
+            </div>
+            <!-- END Section Content -->
+        </section>
+    </div>
+    <!-- END Get Started -->
+</main>
+<!-- END Main Container -->
+{% endblock %}
+
+{% block js_page %}
+<script>
+    jQuery(function() {
+        // Init page helpers (Appear plugin)
+        App.initHelpers('appear');
+    });
+</script>
+{% endblock %}

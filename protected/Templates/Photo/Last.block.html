@@ -1,0 +1,12 @@
+<div class="col-md-10">
+    <h2 class="content-heading">Последние фотографии</h2>
+    <div class="row items-push">
+    {% for photo in photos %}
+        <div class="col-sm-4 animated fadeIn">
+            <div class="img-container fx-img-rotate-l">
+                <img class="img-responsive" src="{{ photo.absPath }}" alt="">
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+</div>

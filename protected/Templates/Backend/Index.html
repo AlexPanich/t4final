@@ -1,0 +1,45 @@
+{% extends 'Backend.html' %}
+
+{% block content %}
+<!-- Main Container -->
+<main id="main-container">
+    <!-- Page Header -->
+    <div class="content bg-gray-lighter">
+        <div class="row items-push">
+            <div class="col-sm-7">
+                <h1 class="page-heading">
+                    Панель администратора <small>Добро пожаловать</small>
+                </h1>
+            </div>
+        </div>
+    </div>
+    <!-- END Page Header -->
+
+    <!-- Page Content -->
+    <div class="content">
+        <!-- My Block -->
+        <div class="block">
+            <div class="block-header">
+                <ul class="block-options">
+                    <li>
+                        <button type="button" data-toggle="block-option" data-action="fullscreen_toggle"></button>
+                    </li>
+                    <li>
+                        <button type="button" data-toggle="block-option" data-action="content_toggle"></button>
+                    </li>
+                    <li>
+                        <button type="button" data-toggle="block-option" data-action="close"><i class="si si-close"></i></button>
+                    </li>
+                </ul>
+                <h3 class="block-title">Главная страница</h3>
+            </div>
+            <div class="block-content">
+                <p>Главная страница админки</p>
+            </div>
+        </div>
+        <!-- END My Block -->
+    </div>
+    <!-- END Page Content -->
+</main>
+<!-- END Main Container -->
+{% endblock %}

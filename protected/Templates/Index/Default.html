@@ -1,0 +1,41 @@
+{% extends 'Frontend.html' %}
+
+{% block content %}
+<!-- Main Container -->
+<main id="main-container">
+    <!-- Hero Content -->
+    <div class="bg-image" style="background-image: url({{ asset('/Layouts/assets/img/hero-image.jpg') }});">
+        <div class="bg-primary-dark-op">
+            <section class="content content-full content-boxed overflow-hidden">
+                <!-- Section Content -->
+                <div class="push-100-t push-50 text-center">
+                    <h1 class="h2 text-white push-10 visibility-hidden" data-toggle="appear" data-class="animated fadeInDown">Фотоальбом</h1>
+                    <h2 class="h5 text-white-op push-50 visibility-hidden" data-toggle="appear" data-class="animated fadeInDown">Интересные фотографии</h2>
+                </div>
+                <!-- END Section Content -->
+            </section>
+        </div>
+    </div>
+    <!-- END Hero Content -->
+
+    <!-- Classic Features #1 -->
+    <div class="bg-white">
+        <section class="content content-boxed">
+            <!-- Section Content -->
+            <t4:block path="//Photo/Last" num="3">
+            <!-- END Section Content -->
+        </section>
+    </div>
+    <!-- END Classic Features #1 -->
+</main>
+<!-- END Main Container -->
+{% endblock %}
+
+{% block js_page %}
+<script>
+    jQuery(function() {
+        // Init page helpers (Appear + CountTo plugins)
+        App.initHelpers(['appear', 'appear-countTo']);
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends 'Backend.html' %}
+
+{% block content %}
+<!-- Main Container -->
+<main id="main-container">
+    <!-- Page Header -->
+    <div class="content bg-gray-lighter">
+        <div class="row items-push">
+            <div class="col-sm-7">
+                <h1 class="page-heading">
+                    Панель администратора <small>Фотографии</small>
+                </h1>
+            </div>
+        </div>
+    </div>
+    <!-- END Page Header -->
+
+    <!-- Page Content -->
+    <div class="content">
+        <!-- My Block -->
+        <div class="block">
+            <div class="block-header">
+                <ul class="block-options">
+                    <li>
+                        <button type="button" data-toggle="block-option" data-action="fullscreen_toggle"></button>
+                    </li>
+                    <li>
+                        <button type="button" data-toggle="block-option" data-action="content_toggle"></button>
+                    </li>
+                    <li>
+                        <button type="button" data-toggle="block-option" data-action="close"><i class="si si-close"></i></button>
+                    </li>
+                </ul>
+                <h3 class="block-title">Все фотографии</h3>
+            </div>
+            <div class="block-content">
+                <div class="row push-item">
+                    {% for photo in photos %}
+                    <div class="col-sm-6 col-md-4 col-lg-3 animated fadeIn">
+                        <div class="img-container">
+                            <img class="img-responsive" src="{{ photo.absPath }}" alt="">
+                            <div class="img-options">
+                                <div class="img-options-content">
+                                    <h3 class="font-w400 text-white push-5">{{ photo.title }}</h3>
+                                    <h4 class="h6 font-w400 text-white-op push-15">{{ photo.preview }}</h4>
+                                    <a class="btn btn-sm btn-default" href="/photo/edit/{{ photo.pk }}"><i class="fa fa-pencil"></i> Edit</a>
+                                    <a class="btn btn-sm btn-default" href="/photo/delete/{{ photo.pk }}"><i class="fa fa-times"></i> Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <!-- END My Block -->
+    </div>
+    <!-- END Page Content -->
+</main>
+<!-- END Main Container -->
+{% endblock %}

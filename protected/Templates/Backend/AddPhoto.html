@@ -1,0 +1,82 @@
+{% extends 'Backend.html' %}
+
+{% block content %}
+<!-- Main Container -->
+<main id="main-container">
+    <!-- Page Header -->
+    <div class="content bg-gray-lighter">
+        <div class="row items-push">
+            <div class="col-sm-7">
+                <h1 class="page-heading">
+                    Панель администратора <small>Работа с фотографиями</small>
+                </h1>
+            </div>
+        </div>
+    </div>
+    <!-- END Page Header -->
+
+    <!-- Page Content -->
+    <div class="content">
+        <!-- My Block -->
+        <div class="block">
+            <div class="block-header">
+                <ul class="block-options">
+                    <li>
+                        <button type="button" data-toggle="block-option" data-action="fullscreen_toggle"></button>
+                    </li>
+                    <li>
+                        <button type="button" data-toggle="block-option" data-action="content_toggle"></button>
+                    </li>
+                    <li>
+                        <button type="button" data-toggle="block-option" data-action="close"><i class="si si-close"></i></button>
+                    </li>
+                </ul>
+                <h3 class="block-title">Добавление новой фотографии</h3>
+            </div>
+            <div class="block-content">
+                {% if errors is defined %}
+                <div class="alert alert-danger">
+                    <ul>
+                        {% for error in errors %}
+                        <li>{{ error.getMessage() }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+                <form class="form-horizontal push-10-t" action="/admin/photo/store" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <div class="col-sm-8 col-sm-offset-1 col-md-6 col-md-offset-0">
+                            <div class="form-material form-material-info floating">
+                                <input class="form-control" type="text" id="title" name="title" {% if fields is defined %} value="{{ fields.title }}" {% endif %}>
+                                <label for="photo[title]">Название</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12 col-md-8">
+                            <div class="form-material form-material-info floating">
+                                <textarea class="form-control" name="description" id="description" rows="3">{% if fields is defined %}{{ fields.description }}{% endif %}</textarea>
+                                <label for="description">Описание</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-12" for="file">Выберите файл</label>
+                        <div class="col-xs-12">
+                            <input type="file" id="file" name="file">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-8 col-sm-offset-1 col-md-6 col-md-offset-0">
+                            <button class="btn btn-primary" type="submit">Отправить</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- END My Block -->
+    </div>
+    <!-- END Page Content -->
+</main>
+<!-- END Main Container -->
+{% endblock %}
