@@ -27,4 +27,22 @@ class User extends BaseModel
         });
 
     }
+
+    public function afterDelete()
+    {
+        foreach ($this->comments as $comment) {
+            $comment->delete();
+        }
+
+        //TODO удаление записей из таблицы связей с ролями
+    }
+
+    public function getRolesAsString()
+    {
+        $roles = $this->roles->map(function($role) {
+            return $role->title;
+        });
+
+        return implode(', ', $roles->toArray());
+    }
 }

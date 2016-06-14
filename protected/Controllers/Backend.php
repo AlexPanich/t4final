@@ -30,7 +30,9 @@ class Backend extends Controller
     public function actionDeleteUser($id)
     {
         $user = User::findByPK($id);
-        $user->delete();
+        if (!empty($user)) {
+            $user->delete();
+        }
         $this->redirect('/admin/user');
     }
 
@@ -101,7 +103,9 @@ class Backend extends Controller
     public function actionDeletePhoto($id)
     {
         $photo = Photo::findByPK($id);
-        $photo->delete();
+        if (!empty($photo)) {
+            $photo->delete();
+        }
         $this->redirect('/admin/photo');
     }
 
@@ -113,7 +117,9 @@ class Backend extends Controller
     public function actionDeleteComment($id)
     {
         $comment = Comment::findByPK($id);
-        $comment->delete();
+        if (!empty($comment)) {
+            $comment->delete();
+        }
         $this->redirect('/admin/comment');
     }
 }

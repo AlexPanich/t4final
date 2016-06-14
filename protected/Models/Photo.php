@@ -111,4 +111,11 @@ class Photo extends BaseModel
         unlink(ROOT_PATH_PUBLIC . '/photos/' . $this->path);
         parent::delete();
     }
+
+    public function afterDelete()
+    {
+        foreach ($this->comments as $comment) {
+            $comment->delete();
+        }
+    }
 }
