@@ -10,6 +10,8 @@ use T4\Mvc\Controller;
 
 class Frontend extends Controller
 {
+    use TField;
+
     public function actionAllPhoto()
     {
         $this->data->photos = Photo::findAll();
@@ -17,11 +19,7 @@ class Frontend extends Controller
 
     public function actionShowPhoto($id)
     {
-        if (isset($this->app->flash->errors)) {
-            $this->data->errors = $this->app->flash->errors;
-            $this->data->fields = $_SESSION['fields'];
-        }
-
+        $this->fillField();
         $this->data->photo = Photo::findByPK($id);
     }
 
@@ -34,8 +32,7 @@ class Frontend extends Controller
         try {
             Comment::create($attributes);
         } catch (MultiException $e) {
-            $this->app->flash->errors = $e;
-            $_SESSION['fields'] = $this->app->request->post;
+            $this->saveField($e);
         }
         $this->redirect('/photo/'.$id);
 

@@ -11,6 +11,8 @@ use T4\Mvc\Controller;
 
 class Backend extends Controller
 {
+    use TField;
+
     protected function access($action, $params = [])
     {
         return $this->app->user->isAdmin();
@@ -44,10 +46,7 @@ class Backend extends Controller
 
     public function actionAddPhoto()
     {
-        if (isset($this->app->flash->errors)) {
-            $this->data->errors = $this->app->flash->errors;
-            $this->data->fields = $_SESSION['fields'];
-        }
+        $this->fillField();
     }
 
     public function actionStorePhoto()
@@ -58,12 +57,10 @@ class Backend extends Controller
         try {
             Photo::create($this->app->request->post);
         } catch(MultiException $e) {
-            $this->app->flash->errors = $e;
-            $_SESSION['fields'] = $this->app->request->post;
+            $this->saveField($e);
             $this->redirect('/admin/photo/add');
         } catch(Exception $e) {
-            $this->app->flash->errors = [$e];
-            $_SESSION['fields'] = $this->app->request->post;
+            $this->saveField([$e]);
             $this->redirect('/admin/photo/add');
         }
 
@@ -72,10 +69,7 @@ class Backend extends Controller
 
     public function actionEditPhoto($id)
     {
-        if (isset($this->app->flash->errors)) {
-            $this->data->errors = $this->app->flash->errors;
-            $this->data->fields = $_SESSION['fields'];
-        }
+        $this->fillField();
         $this->data->photo = Photo::findByPK($id);
     }
 
@@ -90,12 +84,10 @@ class Backend extends Controller
             $photo->update($this->app->request->post);
             $this->redirect('/admin/photo');
         } catch (MultiException $e) {
-            $this->app->flash->errors = $e;
-            $_SESSION['fields'] = $this->app->request->post;
+            $this->saveField($e);
             $this->redirect('/admin/photo/edit/' . $id);
         } catch(Exception $e) {
-            $this->app->flash->errors = [$e];
-            $_SESSION['fields'] = $this->app->request->post;
+            $this->saveField([$e]);
             $this->redirect('/admin/photo/edit/' . $id);
         }
     }
