@@ -34,7 +34,7 @@ class User extends BaseModel
             $comment->delete();
         }
 
-        //TODO удаление записей из таблицы связей с ролями
+        $this->getDbConnection()->execute('DELETE FROM `__user_roles_to___users` WHERE __user_id = ?', [$this->getPk()]);
     }
 
     public function getRolesAsString()
